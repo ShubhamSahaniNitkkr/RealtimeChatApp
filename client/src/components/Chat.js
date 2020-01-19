@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
+import InfoBar from '../components/infoBar';
+import Messages from './Messages.js';
+import InputBar from '../components/inputBar';
 
 let socket;
 
@@ -34,15 +37,17 @@ const Chat = ({ location }) => {
     }
   };
 
-  console.log(message, messages);
+  console.log('ye hit ', message, messages);
 
   return (
-    <input
-      type='text'
-      value={message}
-      onChange={e => setMessage(e.target.value)}
-      onKeyPress={e => (e.key === 'Enter' ? sendMessage(e) : null)}
-    />
+    <React.Fragment>
+      <InfoBar room={room} />
+      <InputBar
+        message={message}
+        setMessage={setMessage}
+        sendMessage={sendMessage}
+      />
+    </React.Fragment>
   );
 };
 

@@ -14,25 +14,33 @@ const Login = () => {
       <div className='card shadow-sm p-3 mb-5 bg-white rounded col-md-3 '>
         <div className='card-body'>
           <h5 className='card-title text-center'>
-            <i className='fas fa-sign-in-alt fa-3x text-primary'></i>
+            <i className='fas fa-door-closed fa-5x text-info'></i>
           </h5>
+          <h5 className='card-title text-center text-primary'>
+            Join Chat Rooms
+          </h5>
+          <hr />
           {alert && (
-            <div class='alert alert-danger' role='alert'>
+            <div className='alert alert-danger' role='alert'>
               <span>{alert}</span>
             </div>
           )}
-          <div className='form-group'>
-            <label htmlFor='username'>Name</label>
+          <div className='form-group text-info'>
+            <label htmlFor='username'>
+              <i className='fas fa-user-alt fa-lg'></i> Name
+            </label>
             <input
               type='text'
-              className='form-control'
+              className='form-control '
               id='username'
               value={name}
               onChange={e => setName(e.target.value)}
             />
           </div>
-          <div className='form-group'>
-            <label htmlFor='room'>Room</label>
+          <div className='form-group text-success'>
+            <label htmlFor='room'>
+              <i className='fas fa-door-open text-info fa-lg'></i> Room
+            </label>
             <input
               type='text'
               className='form-control'
@@ -54,7 +62,7 @@ const Login = () => {
                 : null
             }
             to={`/chat?name=${name}&room=${room}`}
-            className='btn btn-primary'
+            className='btn btn-info'
           >
             Login
           </Link>
