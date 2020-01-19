@@ -1,0 +1,11 @@
+@font-face {
+  font-family: myGoogleFont;
+  src: url('./assets/GoogleSans-Regular.ttf');
+}
+
+.App {
+  font-family: myGoogleFont;
+  background-color: #485460;
+  width: 100vw;
+  height: 100vh;
+}
