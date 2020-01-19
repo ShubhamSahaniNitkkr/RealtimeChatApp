@@ -53,7 +53,7 @@ const Login = () => {
                 ? (e.preventDefault(), setAlert('All Fields are required !'))
                 : null
             }
-            to={`/chat?${name}&${room}`}
+            to={`/chat?name=${name}&room=${room}`}
             className='btn btn-primary'
           >
             Login

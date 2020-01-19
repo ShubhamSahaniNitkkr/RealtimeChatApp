@@ -12,6 +12,10 @@ const io = socketio(server);
 io.on('connection', socket => {
   console.log(`connection established !`);
 
+  socket.on('onlogin', ({ name, room }) => {
+    console.log(`Welcome ${name} to ${room} Room.`);
+  });
+
   socket.on('disconnect', () => {
     console.log(`disconnected  !`);
   });
