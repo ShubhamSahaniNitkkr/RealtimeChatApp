@@ -42,6 +42,7 @@ const Chat = ({ location }) => {
   return (
     <React.Fragment>
       <InfoBar room={room} />
+      <Messages msgs={messages} name={name} />
       <InputBar
         message={message}
         setMessage={setMessage}
