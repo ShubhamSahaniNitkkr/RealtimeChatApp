@@ -4,11 +4,12 @@ import './App.css';
 
 import Login from './components/Login';
 import Chat from './components/Chat';
+import getBasename from './getBasename';
 
 function App() {
   return (
     <div className='App'>
-      <Router>
+      <Router basename={getBasename()}>
         <Route exact path='/' component={Login} />
         <Route exact path='/chat' component={Chat} />
       </Router>

@@ -1,15 +1,15 @@
 {
-  "name": "server",
+  "name": "realtime-chat-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Socket.IO chat server",
   "main": "index.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",

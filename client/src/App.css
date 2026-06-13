@@ -1,10 +1,12 @@
-@font-face {
-  font-family: myGoogleFont;
-  src: url('./assets/GoogleSans-Regular.ttf');
+.App {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  width: 100%;
+  min-height: 100vh;
 }
 
-.App {
-  font-family: myGoogleFont;
-  width: 100vw;
-  height: 100vh;
+@media (max-width: 768px) {
+  .message-card {
+    max-width: 85% !important;
+    flex: 0 0 85%;
+  }
 }

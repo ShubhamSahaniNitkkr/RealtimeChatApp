@@ -9,8 +9,13 @@ const PORT = process.env.PORT || 5000;
 const router = require('./router');
 
 const app = express();
+app.use(cors());
+app.use(router);
+
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio(server, {
+  cors: { origin: '*', methods: ['GET', 'POST'] }
+});
 
 io.on('connection', socket => {
   socket.on('onlogin', ({ name, room }, callback) => {
@@ -20,12 +25,12 @@ io.on('connection', socket => {
 
     socket.emit('message', {
       user: 'admin',
-      text: `${user.name} , Welcome to the room ${user.room}`
+      text: `${user.name}, welcome to the room ${user.room}`
     });
 
     socket.broadcast.to(user.room).emit('message', {
       user: 'admin',
-      text: `${user.name} ,has Joined ${user.room} Room`
+      text: `${user.name} has joined ${user.room} room`
     });
 
     socket.join(user.room);
@@ -38,13 +43,8 @@ io.on('connection', socket => {
 
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
+    if (!user) return;
     io.to(user.room).emit('message', { user: user.name, text: message });
-    io.to(user.room).emit('roomData', {
-      room: user.room,
-      users: getUsersInRoom(user.room)
-    });
-
-    socket.join(user.room);
     callback();
   });
 
@@ -53,14 +53,14 @@ io.on('connection', socket => {
     if (user) {
       io.to(user.room).emit('message', {
         user: 'admin',
-        text: `${user.name} has left !`
+        text: `${user.name} has left!`
+      });
+      io.to(user.room).emit('roomData', {
+        room: user.room,
+        users: getUsersInRoom(user.room)
       });
     }
-    console.log(`disconnected  !`);
   });
 });
 
-app.use(router);
-app.use(cors());
-
-server.listen(PORT, () => console.log(`Server Started at PORT ${PORT}`));
+server.listen(PORT, () => console.log(`Server started at PORT ${PORT}`));

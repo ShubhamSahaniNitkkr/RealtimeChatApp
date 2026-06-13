@@ -1,45 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import InfoBar from '../components/infoBar';
 import Messages from './Messages.js';
 import InputBar from '../components/inputBar';
 
-let socket;
+const ENDPOINT = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
 
 const Chat = ({ location }) => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState('');
-
-  // const ENDPOINT = 'https://realtime-chat-app-ss.herokuapp.com/cd';
-  const ENDPOINT = 'localhost:5000';
+  const [messages, setMessages] = useState([]);
+  const socketRef = useRef();
 
   useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
-    socket = io(ENDPOINT);
-    setName(name);
-    setRoom(room);
-    socket.emit('onlogin', { name, room }, () => {});
+    const { name: userName, room: userRoom } = queryString.parse(location.search);
+    socketRef.current = io(ENDPOINT);
+    setName(userName);
+    setRoom(userRoom);
+
+    socketRef.current.emit('onlogin', { name: userName, room: userRoom }, () => {});
+
+    socketRef.current.on('message', msg => {
+      setMessages(prev => [...prev, msg]);
+    });
+
     return () => {
-      socket.emit('disconnect');
-      socket.off();
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
-  }, [ENDPOINT, location.search]);
-
-  useEffect(() => {
-    socket.on('message', message => [setMessages([...messages, message])]);
-  }, [messages]);
+  }, [location.search]);
 
   const sendMessage = e => {
     e.preventDefault();
-    if (message) {
-      socket.emit('sendMessage', message, () => setMessage(''));
+    if (message && socketRef.current) {
+      socketRef.current.emit('sendMessage', message, () => setMessage(''));
     }
   };
-
-  console.log('ye hit ', message, messages);
 
   return (
     <React.Fragment>
